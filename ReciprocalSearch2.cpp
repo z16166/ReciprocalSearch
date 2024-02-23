@@ -17,14 +17,15 @@ inline bool check(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8
     a[5] = i6;
     a[6] = i7;
     a[7] = i8;
-    a[8] = i9;
-    a[9] = i10;
+    a[8] = i9;    
 
     for (int k = 8; k >= 0; --k)
     {
         if (i10 <= a[k])
             return false;
     }
+
+    a[9] = i10;
 
     mpz_class s1 = 1;
     for (int k = 0; k < 10; ++k) {
@@ -39,24 +40,30 @@ inline bool check(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8
     return s1 == s2;
 }
 
+mpz_t q1, r1;
 inline int ceil(const mpq_class& m) {
-    const mpz_class num = m.get_num();
-    const mpz_class den = m.get_den();
-    const mpz_class quotient = num / den;
-    if (quotient >= 100)
+    mpz_tdiv_qr(q1, r1, m.get_num().get_mpz_t(), m.get_den().get_mpz_t());
+    if (mpz_cmp_si(q1, 100) > 0)
         return 100;
 
-    int r = quotient.get_si();
-    if ((num % den) != 0)
-        ++r;
+    int ret = mpz_get_si(q1);
+    if (mpz_cmp_si(r1, 0) != 0)
+        ++ret;
 
-    return r;
+    return ret;
 }
 
 int main() {
     const auto start = std::chrono::steady_clock::now();
 
     int total = 0;
+
+    mpz_init(q1);
+    mpz_init(r1);
+
+    mpz_t q, r;
+    mpz_init(q);
+    mpz_init(r);
 
     mpq_class ii[101];
 
@@ -109,15 +116,11 @@ int main() {
                                         if (m9 <= 0) continue;
 
                                         const mpq_class last = 1 / m9;
+                                        mpz_tdiv_qr(q, r, last.get_num().get_mpz_t(), last.get_den().get_mpz_t());
+                                        if (mpz_cmp_si(r, 0) != 0) continue;
+                                        if (mpz_cmp_si(q, 100) > 0) continue;
 
-                                        const mpz_class num = last.get_num();
-                                        const mpz_class den = last.get_den();
-                                        if ((num % den) != 0) continue;
-
-                                        const mpz_class quotient = num / den;
-                                        if (quotient > 100) continue;
-
-                                        int i10 = quotient.get_si();
+                                        const int i10 = mpz_get_si(q);
                                         if (i10 <= i9) continue;
 
                                         if (check(i1, i2, i3, i4, i5, i6, i7, i8, i9, i10)) {
@@ -133,6 +136,12 @@ int main() {
             }
         }
     }
+
+    mpz_clear(q);
+    mpz_clear(r);
+
+    mpz_clear(q1);
+    mpz_clear(r1);
 
     const auto end = std::chrono::steady_clock::now();
     printf("%.3f seconds\n", std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() / 1000.0);
