@@ -20,6 +20,12 @@ bool check(int i1, int i2, int i3, int i4, int i5, int i6, int i7, int i8, int i
     a[8] = i9;
     a[9] = i10;
 
+    for (int k = 8; k >= 0; --k)
+    {
+        if (i10 <= a[k])
+            return false;
+    }
+
     mpz_t t;
     mpz_init(t);
     mpz_set_ui(t, 1);
