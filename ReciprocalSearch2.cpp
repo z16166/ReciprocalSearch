@@ -89,7 +89,7 @@ int main() {
                         if (m5 <= 0) continue;
 
                         const int u6 = min(96, ceil(5 / m5));
-                        for (int i6 = i5 + 1; i6 < u6; i6++) {
+                        for (int i6 = i5 + 1; i6 <= u6; i6++) {
                             const mpq_class m6 = m5 - ii[i6];
                             if (m6 <= 0) continue;
 
