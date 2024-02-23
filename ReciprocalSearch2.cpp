@@ -114,10 +114,10 @@ int main() {
                                         const mpz_class den = last.get_den();
                                         if ((num % den) != 0) continue;
 
-                                        const mpz_class quotinent = num / den;
-                                        if (quotinent > 100) continue;
+                                        const mpz_class quotient = num / den;
+                                        if (quotient > 100) continue;
 
-                                        int i10 = quotinent.get_si();
+                                        int i10 = quotient.get_si();
                                         if (i10 <= i9) continue;
 
                                         if (check(i1, i2, i3, i4, i5, i6, i7, i8, i9, i10)) {
