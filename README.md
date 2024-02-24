@@ -10,4 +10,6 @@
 
 整个代码也可以不用double来运算，而是用GMP的自然数库来运算。
 
-用GMP算出来的是69014个解，详见txt文件。5800 X3D CPU上算了1507秒。用的是ReciprocalSearch2.cpp这个。
+ReciprocalSearch2.cpp这个用GMP算出来的是69014个解，详见txt文件。5800 X3D CPU上算了1241秒。
+
+ReciprocalSearch3.cpp这个改用uint64_t进行大整数运算，也可以在30秒以内完成。
